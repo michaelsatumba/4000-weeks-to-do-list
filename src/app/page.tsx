@@ -1,13 +1,16 @@
 'use client';
 import { auth, googleProvider } from "../../utils/firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter()
   const handleGoogleSignUp = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       // Handle successful login here (e.g., navigate to a different page)
       console.log("User signed in successfully:", result.user);
+      router.push('/dashboard');
     } catch (error) {
       console.error("Error signing in with Google:", error);
       // Handle errors here (e.g., display an error message)
