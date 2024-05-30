@@ -1,8 +1,9 @@
 'use client';
 import { useEffect, useState, SetStateAction, Dispatch } from 'react';
-import { auth } from "../../../utils/firebaseConfig";
+import { auth, db } from "../../../utils/firebaseConfig";
 import { useRouter } from 'next/navigation';
 import { signOut } from "firebase/auth";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
 export default function Page() {
   const router = useRouter();
