@@ -6,12 +6,14 @@ import { signOut } from "firebase/auth";
 
 export default function Page() {
   const router = useRouter();
+  const [user, setUser] = useState<{ displayName: string } | null>(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(function(user) {
-      if (user) {
+    const unsubscribe = auth.onAuthStateChanged(function(authUser) {
+      if (authUser) {
         // User is signed in.
-        console.log(user);
+        console.log(authUser);
+        setUser({ displayName: authUser.displayName || '' });
       } else {
         // No user is signed in.
         console.log("No user is signed in.");
@@ -58,7 +60,7 @@ export default function Page() {
 return (
     <div>
   <div className="flex items-center justify-around py-2">
-    <h1>Hello, Dashboard Page!</h1>
+    <h1>Hello, {user ? user.displayName : 'Guest'}!</h1>
     <button
       onClick={handleLogout}
       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
