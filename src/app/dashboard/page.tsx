@@ -3,7 +3,7 @@ import { useEffect, useState, SetStateAction, Dispatch } from 'react';
 import { auth, db } from "../../../utils/firebaseConfig";
 import { useRouter } from 'next/navigation';
 import { signOut } from "firebase/auth";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, doc, setDoc, onSnapshot, orderBy, query, getDocs } from "firebase/firestore";
 
 export default function Page() {
   const router = useRouter();
@@ -26,13 +26,14 @@ export default function Page() {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      router.push('/');
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        router.push('/');
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
   };
 
   const [openTasks, setOpenTasks] = useState<string[]>([]);
@@ -57,6 +58,7 @@ export default function Page() {
       setTasks((prevTasks) => prevTasks.map(task => task === taskToUpdate ? newTask : task));
     }
   };
+
 
 return (
     <div>
